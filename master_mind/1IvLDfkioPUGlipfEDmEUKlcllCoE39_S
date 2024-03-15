@@ -1,0 +1,163 @@
+require_relative 'utils.rb'
+
+
+class Player
+
+  attr_reader :role, :name
+
+  def initialize (args = {})
+    @role = args[:role]
+    @name = args[:name]
+    @inputs = InputManager.new()
+    role_desc
+  end
+
+  # def set_cpu
+  #   if @name == "" then @name = "CPU" end
+  # end
+
+  def greeting
+    puts "\n#{@name}, you are the #{@role}."
+  end
+
+  #-------------------------------------------------------------------------------------------------------
+  # def input_message
+  #   print "\nPlease input 4 numbers (1-6), seperated by a space. No duplicates are allowed.\nPress <Enter> when you are done.\n"
+  # end
+
+  # def cpu_gen_input(digits = 4)
+  #   val = ''
+  #   choice_arr = ['1', '2', '3', '4', '5', '6']
+  #   digits.times do
+  #     val += choice_arr.sample
+  #   end
+  #   val
+  # end
+
+  # def input_to_i_array(string) # converting input into an array
+  #   input_array = string.split('').map(&:to_i)
+  #   return input_array
+  # end
+
+  # def check_input(input_array) # checking that input array is valid
+  #   is_valid = false
+  #   if input_array.length < 4 # not enough input digits
+  #     puts "\n\nNot enough digits given.\n\n"
+  #   elsif input_array.max > 6 || input_array.min < 1 # out of range digits
+  #     puts "\n\nOnly numbers 1, 2, 3, 4, 5, 6 are accepted.\n\n"
+  #   elsif input_array.uniq.length < 4
+  #     puts "\n\nDuplicates are not allowed."
+  #   else
+  #   is_valid = true
+  #   end
+  # end
+
+  # def cpu_check_input(input_array) # checking that input array is valid
+  #   is_valid = false
+  #   if input_array.length < 4 # not enough input digits
+  #     is_valid
+  #   elsif input_array.max > 6 || input_array.min < 1 # out of range digits
+  #     is_valid
+  #   elsif input_array.uniq.length < 4
+  #     is_valid
+  #   else
+  #   is_valid = true
+  #   end
+  # end
+end
+
+
+class Maker < Player
+  require 'io/console'
+  attr_writer :name
+
+  def initialize(args = {})
+    @name = args[:name] || "CPU"
+    @role = "Code Maker"
+    # set_cpu
+  end
+
+  def role_desc
+    print "#{greeting} Your job is to set a hard to guess password that the Code Breaker can't crack!\n"
+  end
+
+  # def generate_password(x, max)
+  #   x.times.map{ Random.rand(max) }
+  # end
+
+  # def human_player
+  #   role_desc
+  #   input_message
+  #   password = input_to_i_array(STDIN.noecho(&:gets).chomp) # getting and hiding input from human maker
+  #   check_input(password) == true ? password : set_password
+  # end
+
+  # def cpu_player
+  #   password = input_to_i_array(cpu_gen_input)
+  #   cpu_check_input(password) == true ? password : cpu_player
+  # end
+
+#--------------------------
+  def set_password
+    player_password_input
+  end
+end
+
+
+class Breaker < Player
+attr_writer :name
+
+  def initialize(args = {})
+    @role = "Code Breaker"
+    @name = args[:name]
+    # set_cpu
+  end
+
+  def role_desc
+    print "#{greeting} Your job is to guess the Password before you run out of turns!\n"
+  end
+
+  def human_player
+    input_message
+    guess = input_to_i_array(gets.chomp) # getting input from human breaker
+    check_input(guess) == true ? guess : human_player
+  end
+
+  # def cpu_player
+  #   guess = []
+  #   guess.push(cpu_gen_input(4))
+  #   cpu_check_input(guess) == true ? guess : cpu_player
+  # end
+
+#--------------------------
+  def make_guess
+    # if @name == "" || @name == "CPU"
+    #   cpu_player
+    # else
+      human_player
+    # end
+  end
+end
+
+
+class CPU < Player
+  def initialize
+    @role = "CPU"
+    @name = "CPU"
+    role_desc
+  end
+
+  def role_desc
+    print "The CPU  Your job is to guess the Password before you run out of turns!\n"
+  end
+
+  def make_input
+    input = ['1', '1', '1', '1']
+  end
+
+  def cpu_player
+    guess = []
+    guess.push(cpu_gen_input(4))
+    cpu_check_input(guess) == true ? guess : cpu_player
+  end
+end

@@ -1,4 +1,4 @@
-
+# This code would not exist without https://www.youtube.com/@self_taught_dev
 module SaveManager
 
   def load_game

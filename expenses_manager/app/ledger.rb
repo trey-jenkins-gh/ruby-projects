@@ -8,10 +8,12 @@ module ExpenseTracker
         message = 'Invalid expense: `payee` is required'
         return RecordResult.new(false, nil, message)
       end
+
       unless expense.key?('amount')
         message = 'Invalid expense: `amount` is required'
         return RecordResult.new(false, nil, message)
       end
+
       unless expense.key?('date')
         message = 'Invalid expense: `date` is required'
         return RecordResult.new(false, nil, message)
@@ -25,6 +27,5 @@ module ExpenseTracker
     def expenses_on(date)
       DB[:expenses].where(date: date).all
     end
-
   end
 end

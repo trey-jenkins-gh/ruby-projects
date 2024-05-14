@@ -1,6 +1,9 @@
 require_relative 'ledger'
 require 'sinatra/base'
 require 'json'
+require 'net/http'
+require 'uri'
+require 'ox'
 
 module ExpenseTracker
   class API < Sinatra::Base
